@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#060915">
+  <title>星轨快递 · Stellar Courier</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand" aria-label="星轨快递">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-copy">
+          <span class="brand-title">星轨快递</span>
+          <span class="brand-sub">STELLAR COURIER / 07</span>
+        </span>
+      </div>
+      <div class="top-meta">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>航线在线</span>
+        <span>星区 K-2049</span>
+      </div>
+    </header>
+
+    <main class="game-shell">
+      <div class="stage" id="stage">
+        <canvas id="gameCanvas" aria-label="星轨快递游戏区域：移动飞船，收集星核并躲避陨石"></canvas>
+        <div class="stage-grid" aria-hidden="true"></div>
+        <div class="stage-vignette" aria-hidden="true"></div>
+
+        <section class="hud" id="hud" aria-label="游戏状态">
+          <div class="hud-left">
+            <div class="hud-stat">
+              <div class="hud-label">积分</div>
+              <div class="hud-value" id="scoreValue">0000</div>
+            </div>
+            <div class="hud-stat">
+              <div class="hud-label">连击</div>
+              <div class="hud-value combo" id="comboValue">×1.0</div>
+            </div>
+            <div class="hud-stat">
+              <div class="hud-label">船体</div>
+              <div class="hull" id="hullPips" aria-label="剩余船体">
+                <span class="hull-pip active"></span>
+                <span class="hull-pip active"></span>
+                <span class="hull-pip active"></span>
+              </div>
+            </div>
+            <div class="hud-stat">
+              <div class="hud-label">护盾</div>
+              <div class="hud-value shield" id="shieldValue">0</div>
+            </div>
+            <div class="hud-stat">
+              <div class="hud-label">冲刺</div>
+              <div class="hud-value dash" id="dashValue">就绪</div>
+            </div>
+          </div>
+          <div class="hud-right">
+            <button class="control-btn" id="soundBtn" type="button" aria-label="关闭声音">声音：开</button>
+            <button class="control-btn" id="pauseBtn" type="button">暂停</button>
+          </div>
+        </section>
+
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+        <section class="overlay" id="startScreen">
+          <div class="intro-card">
+            <div class="eyebrow">DEEP SPACE DELIVERY RUN</div>
+            <h1>星轨<br><span>快递</span></h1>
+            <p class="tagline">穿过陨石带，收集散落的星核。<br>每一次加速，都别让船体先抵达终点。</p>
+            <div class="start-actions">
+              <button class="primary-btn" id="startBtn" type="button">开始送货</button>
+            </div>
+            <div class="best-line" id="bestLine">最高纪录 0000 · 航程 00:00</div>
+            <div class="key-row" aria-label="操作说明">
+              <span class="key-item"><kbd>WASD</kbd><span>移动</span></span>
+              <span class="key-item"><kbd>SPACE</kbd><span>冲刺</span></span>
+              <span class="key-item"><kbd>P</kbd><span>暂停</span></span>
+            </div>
+            <div class="touch-hint">按住并拖动飞船<br>点按右下角按钮冲刺</div>
+          </div>
+        </section>
+
+        <section class="overlay" id="gameOverScreen" hidden>
+          <div class="game-over-card">
+            <div class="game-over-icon" aria-hidden="true">×</div>
+            <h2>航线中断</h2>
+            <p id="gameOverMessage">飞船已经返厂维修。</p>
+            <div class="result-grid">
+              <div class="result-box">
+                <div class="result-label">本次积分</div>
+                <div class="result-value" id="finalScore">0000</div>
+              </div>
+              <div class="result-box">
+                <div class="result-label">最高纪录</div>
+                <div class="result-value" id="finalBest">0000</div>
+              </div>
+            </div>
+            <div class="game-over-actions">
+              <button class="primary-btn" id="restartBtn" type="button">再来一趟</button>
+              <button class="ghost-btn" id="menuBtn" type="button">返回首页</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="overlay" id="pauseScreen" hidden>
+          <div class="pause-card">
+            <h2>暂停中</h2>
+            <p>航线已冻结，星核不会逃跑。</p>
+            <button class="primary-btn" id="resumeBtn" type="button">继续航行</button>
+          </div>
+        </section>
+
+        <div class="mobile-controls" aria-hidden="false">
+          <button class="dash-btn" id="dashBtn" type="button" aria-label="飞船冲刺" disabled>冲刺</button>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer-note">
+      <span>拖动或使用方向键移动 · 冲刺期间免疫碰撞</span>
+      <span>STELLAR COURIER BUILD 1.0</span>
+    </footer>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
+
