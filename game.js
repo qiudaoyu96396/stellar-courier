@@ -549,34 +549,37 @@
         const ay = (keys.has("ArrowDown") || keys.has("KeyS") ? 1 : 0) -
                    (keys.has("ArrowUp") || keys.has("KeyW") ? 1 : 0);
         const hasKeys = ax !== 0 || ay !== 0;
+        const moveAcceleration = clamp(Math.min(W, H) * 2, 650, 1050);
+        const pointerAcceleration = clamp(Math.min(W, H) * 2.2, 720, 1150);
 
         if (hasKeys) {
           pointer.active = false;
           const length = Math.hypot(ax, ay) || 1;
-          player.vx += (ax / length) * 1250 * dt;
-          player.vy += (ay / length) * 1250 * dt;
+          player.vx += (ax / length) * moveAcceleration * dt;
+          player.vy += (ay / length) * moveAcceleration * dt;
         } else if (pointer.active) {
           const dx = pointer.x - player.x;
           const dy = pointer.y - player.y;
           const distance = Math.hypot(dx, dy);
           if (distance > 7) {
-            const acceleration = Math.min(1450, distance * 10);
+            const acceleration = Math.min(pointerAcceleration, distance * 7);
             player.vx += (dx / distance) * acceleration * dt;
             player.vy += (dy / distance) * acceleration * dt;
           }
         }
 
         if (!hasKeys && !pointer.active) {
-          const damping = Math.pow(player.dash > 0 ? 0.08 : 0.018, dt);
+          const damping = Math.pow(player.dash > 0 ? 0.08 : 0.01, dt);
           player.vx *= damping;
           player.vy *= damping;
         } else {
-          player.vx *= Math.pow(0.36, dt);
-          player.vy *= Math.pow(0.36, dt);
+          player.vx *= Math.pow(0.26, dt);
+          player.vy *= Math.pow(0.26, dt);
         }
 
         const speed = Math.hypot(player.vx, player.vy);
-        const maxSpeed = player.dash > 0 ? 860 : 390;
+        const normalMaxSpeed = clamp(Math.min(W, H) * 0.55, 175, 300);
+        const maxSpeed = player.dash > 0 ? 860 : normalMaxSpeed;
         if (speed > maxSpeed) {
           player.vx = (player.vx / speed) * maxSpeed;
           player.vy = (player.vy / speed) * maxSpeed;
